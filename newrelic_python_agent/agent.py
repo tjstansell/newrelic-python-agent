@@ -108,9 +108,11 @@ class NewRelicPythonAgent(helper.Controller):
         :rtype: str
 
         """
-        licensekey = os.getenv('NEWRELIC_LICENSE_KEY')
+        licensekey = os.getenv('NEW_RELIC_LICENSE_KEY')
         if licensekey is None:
-            licensekey = self.config.application.license_key
+            licensekey = os.getenv('NEWRELIC_LICENSE_KEY')
+            if licensekey is None:
+                licensekey = self.config.application.license_key
         return licensekey
 
     def get_instance_name(self, plugin_name, instance):
