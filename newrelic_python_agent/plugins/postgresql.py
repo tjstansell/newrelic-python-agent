@@ -6,6 +6,7 @@ import logging
 import psycopg2
 from psycopg2 import extensions
 from psycopg2 import extras
+import os
 
 from newrelic_python_agent.plugins import base
 
@@ -277,10 +278,16 @@ class PostgreSQL(base.Plugin):
         filtered_args = ["name", "superuser", "relation_stats"]
         args = {}
         for key in set(self.config) - set(filtered_args):
+            value = self.config[key]
+            # If value starts with $ and exists as an env var, use that value
+            if value[0] == "$":
+                # strip the $, check if the env var exists, otherwise fallback
+                value = os.getenv(value, value)
+                
             if key == 'dbname':
-                args['database'] = self.config[key]
+                args['database'] = value
             else:
-                args[key] = self.config[key]
+                args[key] = value
         return args
 
     def poll(self):
