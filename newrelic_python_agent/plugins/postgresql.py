@@ -6,6 +6,7 @@ import logging
 import psycopg2
 from psycopg2 import extensions
 from psycopg2 import extras
+import os
 
 from newrelic_python_agent.plugins import base
 
