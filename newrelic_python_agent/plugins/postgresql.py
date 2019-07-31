@@ -283,7 +283,7 @@ class PostgreSQL(base.Plugin):
             # If value starts with $ and exists as an env var, use that value
             if isinstance(value, six.string_types) and value[0] == "$":
                 # strip the $, check if the env var exists, otherwise fallback
-                value = os.getenv(value, value)
+                value = os.getenv(value[1:], value)
 
             if key == 'dbname':
                 args['database'] = value
