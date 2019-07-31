@@ -11,6 +11,7 @@ import tempfile
 import time
 import urlparse
 import six
+import os
 
 LOGGER = logging.getLogger(__name__)
 
@@ -296,7 +297,12 @@ class Plugin(object):
         :rtype: str
 
         """
-        return self.config.get('name', socket.gethostname().split('.')[0])
+        value = self.config.get('name', socket.gethostname().split('.')[0])
+        if isinstance(value, six.string_types) and value[0] == "$":
+            # strip the $, check if the env var exists, otherwise fallback
+            value = os.getenv(value[1:], value)
+
+        return value
 
     def poll(self):
         """Poll the server returning the results in the expected component
