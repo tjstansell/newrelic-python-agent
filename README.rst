@@ -15,6 +15,7 @@ NewRelic platform. Currently supported backend systems are:
 - pgBouncer
 - PHP FPM
 - PostgreSQL
+- Prometheus
 - RabbitMQ
 - Redis
 - Riak
@@ -313,6 +314,44 @@ E.g.:
       superuser: False
       relation_stats: False
 
+Prometheus Installation Notes
+------------------------
+You can monitor any prometheus exporter endpoint via http/https.
+Prometheus samples are named by their name and their labels.
+E.g. ``http_requests_total{job="apiserver", status=200}`` becomes ``http_requests_total/job/apiserver/status/200``
+
+By default all samples are added as derive values. To treat a sample as gauge value you can use the ``gauges`` configuration value.
+E.g.:
+
+::
+  prometheus:
+     -  name: my-go-app
+        scheme: http
+        host: localhost
+        port: 8080
+        gauges:
+          - go_threads
+
+Furthermore the plugin allows you to include and exclude certain samples by their name.
+If the ``include`` configuration parameter is not set, all samples are included (except for excluded ones).
+If the ``include`` configuration parameter is set, only those samples are included.
+If the ``exclude`` configuration parameter is set, those samples are excluded (even if they are listed in the ``include`` configuration parameter).
+E.g.:
+
+::
+  prometheus:
+     -  name: my-go-app
+        scheme: http
+        host: localhost
+        port: 8080
+        include:
+          - go_threads
+          - go_info
+        exclude:
+          - go_info
+
+If you are monitoring a prometheus exporter via a HTTPS connection you can use the ``verify_ssl_cert`` configuration value to disable SSL certificate verification.
+
 RabbitMQ Installation Notes
 ---------------------------
 The user specified must have access to all virtual hosts you wish to monitor and should have either the Administrator tag or the Monitoring tag.
@@ -461,6 +500,14 @@ Configuration Example
           user: postgres
           dbname: postgres
           superuser: True
+
+      prometheus:
+         -  name: my-go-app
+            scheme: http
+            host: localhost
+            port: 8080
+            gauges:
+              - go_threads
 
       rabbitmq:
         - name: rabbitmq@localhost
