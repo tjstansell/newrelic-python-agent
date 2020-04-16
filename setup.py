@@ -16,7 +16,8 @@ install_requires = ['helper>=2.2.2', 'requests>=2.0.0', 'six>=1.5']
 tests_require = []
 extras_require = {'mongodb': ['pymongo'],
                   'pgbouncer': ['psycopg2'],
-                  'postgresql': ['psycopg2']}
+                  'postgresql': ['psycopg2'],
+                  'prometheus': ['prometheus_client']}
 
 if sys.version_info < (2, 7, 0):
     install_requires.append('importlib')

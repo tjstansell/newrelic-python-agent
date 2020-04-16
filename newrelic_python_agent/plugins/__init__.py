@@ -19,6 +19,7 @@ available = {
     'php_apc': 'newrelic_python_agent.plugins.php_apc.APC',
     'php_fpm': 'newrelic_python_agent.plugins.php_fpm.FPM',
     'postgresql': 'newrelic_python_agent.plugins.postgresql.PostgreSQL',
+    'prometheus': 'newrelic_python_agent.plugins.prometheus.Prometheus',
     'rabbitmq': 'newrelic_python_agent.plugins.rabbitmq.RabbitMQ',
     'redis': 'newrelic_python_agent.plugins.redis.Redis',
     'riak': 'newrelic_python_agent.plugins.riak.Riak',
