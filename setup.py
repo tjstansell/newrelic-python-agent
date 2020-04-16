@@ -23,7 +23,7 @@ if sys.version_info < (2, 7, 0):
     install_requires.append('importlib')
 
 setup(name='newrelic_python_agent',
-      version='1.3.0',
+      version='1.4.0',
       description='Python based agent for collecting metrics for NewRelic',
       url='https://github.com/NewRelic-Python-Plugins/newrelic-python-agent',
       packages=['newrelic_python_agent', 'newrelic_python_agent.plugins'],
