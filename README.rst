@@ -81,7 +81,7 @@ On Ubuntu systems 16.04 and newer, you can try running ``systemctl enable newrel
 Installing Additional Requirements
 ----------------------------------
 
-To use the MongoDB the ``mongodb`` library is required. For the pgBouncer or PostgreSQL plugin you must install the ``psycopg2`` library. To easily do
+To use the MongoDB the ``mongodb`` library is required. For the pgBouncer or PostgreSQL plugin you must install the ``psycopg2`` library. For the prometheus plugin you must install the ``prometheus_client`` library. To easily do
 this, make sure you have the latest version of ``pip`` installed (https://pip.pypa.io/). This should be done after installing the agent itself:
 
 ::
@@ -95,6 +95,10 @@ or::
 or::
 
     $ pip install newrelic-python-agent[postgresql]
+
+or::
+
+    $ pip install newrelic-python-agent[prometheus]
 
 If this does not work for you, make sure you are running a recent copy of ``pip`` (>= 1.3).
 
@@ -324,6 +328,7 @@ By default all samples are added as derive values. To treat a sample as gauge va
 E.g.:
 
 ::
+
   prometheus:
      -  name: my-go-app
         scheme: http
@@ -339,6 +344,7 @@ If the ``exclude`` configuration parameter is set, those samples are excluded (e
 E.g.:
 
 ::
+
   prometheus:
      -  name: my-go-app
         scheme: http
