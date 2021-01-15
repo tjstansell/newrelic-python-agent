@@ -463,7 +463,7 @@ class MySQL(base.Plugin):
                 metrics.remove('buffer_pool_stats')
             else:
                 # support comma-separated list
-                metrics = re.split("\s*,\s*", metrics)
+                metrics = re.split(r"\s*,\s*", metrics)
 
         self.logger.debug("metrics to collect: %s" % ", ".join(metrics))
         for cat in metrics:
@@ -828,11 +828,11 @@ class MySQL(base.Plugin):
         """
         rows = list(cursor)
         metrics = {
-            "history_list_length": "^History list length\s+(\d+)",
-            "log_sequence_number": "^Log sequence number\s+(\d+)",
-            "last_checkpoint": "^Last checkpoint at\s+(\d+)",
-            "queries_inside_innodb": "^(\d+)\s+queries inside InnoDB",
-            "queries_in_queue": "queries inside InnoDB,\s+(\d+)\s+queries in queue",
+            "history_list_length": r"^History list length\s+(\d+)",
+            "log_sequence_number": r"^Log sequence number\s+(\d+)",
+            "last_checkpoint": r"^Last checkpoint at\s+(\d+)",
+            "queries_inside_innodb": r"^(\d+)\s+queries inside InnoDB",
+            "queries_in_queue": r"queries inside InnoDB,\s+(\d+)\s+queries in queue",
         }
         result = {
             'log_sequence_number': 0.0,
@@ -869,7 +869,7 @@ class MySQL(base.Plugin):
             # columns = type, name, status
             # 1. ignore type (always "InnoDB")
             # 2. strip &, [, and ] chars, then convert "->" to "_"
-            name = re.sub('[&\[\]]', "", row[1]).replace("->", "_")
+            name = re.sub(r'[&\[\]]', "", row[1]).replace("->", "_")
             # 3. parse value from status column in "name=value" format
             value = self.parse_metric_value(row[2].split("=")[-1])
             if name in result:
@@ -889,7 +889,7 @@ class MySQL(base.Plugin):
         self.logger.debug("creating DB connection")
         conn = sql.connect(**self.connection_arguments)
         self.logger.debug("DB connection ready: %r", conn.get_host_info())
-        return conn
+        return conn.cursor()
 
     @property
     def connection_arguments(self):
