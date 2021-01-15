@@ -352,7 +352,7 @@ class NewRelicPythonAgent(helper.Controller):
 
         s = BytesIO()
         g = gzip.GzipFile(fileobj=s, mode='w')
-        g.write(json.dumps(body, ensure_ascii=False))
+        g.write(json.dumps(body, ensure_ascii=False).encode())
         g.close()
         gzipped_body = s.getvalue()
         request_body = gzipped_body
