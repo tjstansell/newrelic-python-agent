@@ -15,9 +15,9 @@ import time
 import gzip
 
 try:
-    from StringIO import StringIO
+    from StringIO import BytesIO
 except ImportError:
-    from io import StringIO
+    from io import BytesIO
 
 from newrelic_python_agent import __version__
 from newrelic_python_agent import plugins
@@ -350,7 +350,7 @@ class NewRelicPythonAgent(helper.Controller):
 
         body = {'agent': self.agent_data, 'components': components}
 
-        s = StringIO()
+        s = BytesIO()
         g = gzip.GzipFile(fileobj=s, mode='w')
         g.write(json.dumps(body, ensure_ascii=False))
         g.close()
