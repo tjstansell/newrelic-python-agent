@@ -64,6 +64,7 @@ Example:
 
 """
 
+import six
 import re
 import time
 import logging
@@ -76,7 +77,7 @@ try:
         """Extract error code from pymysql.Error"""
         return err.args[0]
     from pymysql.constants.ER import ACCESS_DENIED_ERROR as ER_ACCESS_DENIED_ERROR, BAD_DB_ERROR as ER_BAD_DB_ERROR
-except ImportError as e1:
+except ImportError:
     import mysql.connector as sql
 
     def _errno(err):
@@ -768,7 +769,7 @@ class MySQL(base.Plugin):
             try:
                 r = float(value)
                 return r
-            except:
+            except Exception:
                 pass
 
             return None
@@ -783,7 +784,7 @@ class MySQL(base.Plugin):
         :result: True if the value is a number type, False otherwise
         :rtype: bool
         """
-        if isinstance(value, (int, float, long, complex)):  # noqa
+        if isinstance(value, (six.integer_types + (int, float, complex))):
             return True
         return False
 
