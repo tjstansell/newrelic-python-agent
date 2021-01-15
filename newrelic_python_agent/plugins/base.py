@@ -9,9 +9,10 @@ import requests
 import socket
 import tempfile
 import time
-import urlparse
 import six
 import os
+
+from six.moves import urllib
 
 LOGGER = logging.getLogger(__name__)
 
@@ -482,13 +483,13 @@ class HTTPStatsPlugin(Plugin):
         if self.config.get('port'):
             netloc += ':%s' % self.config['port']
 
-        return urlparse.urlunparse((self.config.get('scheme', 'http'),
-                                    netloc,
-                                    self.config.get('path', self.DEFAULT_PATH),
-                                    None,
-                                    self.config.get('query',
-                                                    self.DEFAULT_QUERY),
-                                    None))
+        return urllib.urlunparse((self.config.get('scheme', 'http'),
+                                  netloc,
+                                  self.config.get('path', self.DEFAULT_PATH),
+                                  None,
+                                  self.config.get('query',
+                                                  self.DEFAULT_QUERY),
+                                  None))
 
     @property
     def request_kwargs(self):

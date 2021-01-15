@@ -191,13 +191,17 @@ MySQLConfig:
 import logging
 import re
 import os
-import urllib2
 import json
 import credstash
 import boto3
 from botocore.exceptions import ClientError
-
 from newrelic_python_agent.plugins import base
+try:
+    # For Python 3.0 and later
+    from urllib.request import urlopen
+except ImportError:
+    # Fall back to Python 2's urllib2
+    from urllib2 import urlopen
 
 LOGGER = logging.getLogger(__name__)
 
@@ -305,9 +309,9 @@ class MySQLConfig(base.ConfigPlugin):
         LOGGER.info('Obtaining %s from EC2 metadata.' % value)
         try:
             url = 'http://169.254.169.254/latest/dynamic/instance-identity/document'
-            document = json.loads(urllib2.urlopen(url, timeout=3).read())
+            document = json.loads(urlopen(url, timeout=3).read())
             return [document[value]]
-        except urllib2.URLError as e:
+        except Exception as e:
             LOGGER.warning("failed to query EC2 metadata: %s", e)
             pass
 
